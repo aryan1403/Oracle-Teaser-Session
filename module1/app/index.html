@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Banking Portal | Loan Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Dev Panel for Demo -->
+    <div class="dev-panel">
+        <h4>Dev Controls</h4>
+        <button id="chaos-btn" class="dev-btn">Simulate UI Update (Chaos Mode)</button>
+        <span id="chaos-status" class="status-off">Standard UI Active</span>
+    </div>
+
+    <main class="glass-container">
+        <header>
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>NexusBank Core</span>
+            </div>
+            <h1>Loan Eligibility Calculator</h1>
+            <p>Determine your maximum eligible loan amount instantly.</p>
+        </header>
+
+        <section id="form-section">
+            <form id="loan-form" onsubmit="event.preventDefault(); calculateLoan();">
+                <div class="input-group" id="group-amount">
+                    <label for="loan-amount">Requested Loan Amount ($)</label>
+                    <input type="number" id="loan-amount" required placeholder="e.g. 50000" aria-label="Requested Loan Amount">
+                </div>
+
+                <div class="input-group" id="group-tenure">
+                    <label for="loan-tenure">Tenure (Years)</label>
+                    <input type="number" id="loan-tenure" required placeholder="e.g. 15" aria-label="Tenure in Years">
+                </div>
+
+                <div class="input-group" id="group-income">
+                    <label for="monthly-income">Monthly Income ($)</label>
+                    <input type="number" id="monthly-income" required placeholder="e.g. 8000" aria-label="Monthly Income">
+                </div>
+
+                <div class="action-group" id="group-action">
+                    <button type="submit" id="calculate-btn" class="primary-btn" aria-label="Calculate Eligibility">Calculate Eligibility</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="result-section" class="hidden">
+            <div class="result-card">
+                <h3>Eligibility Status</h3>
+                <div id="eligibility-result" class="result-value">Pending...</div>
+                <div class="detail-row">
+                    <span>Max Eligible Amount:</span>
+                    <strong id="max-amount">$0</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Estimated EMI:</span>
+                    <strong id="est-emi">$0</strong>
+                </div>
+                <button id="reset-btn" class="secondary-btn" onclick="resetForm()" aria-label="Calculate Another Loan">Calculate Another Loan</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
