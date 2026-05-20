@@ -1,0 +1,21 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.example
+
+# Playwright Test Results
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# OS metadata
+.DS_Store
+Thumbs.db
