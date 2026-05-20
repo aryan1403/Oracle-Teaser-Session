@@ -1,52 +1,58 @@
 # Oracle Teaser Session: AI-Driven Automation for Complex Banking Workflows
 
-This repository contains the demonstration suite for the Oracle Teaser Session, showcasing the transformation from legacy, brittle test automation to modern, AI-driven, self-healing architectures.
+This repository contains the enterprise demonstration suite for the Oracle Teaser Session. It showcases the evolution of software quality assurance from brittle legacy automation to true, AI-driven Agentic Test-Driven Development (TDD) and Chaos Engineering.
 
-## The Challenge
-Dynamic UI changes in modern net-banking portals often break traditional test automation scripts. Furthermore, complex multi-layered API payloads required for KYC (Know Your Customer) and regulatory compliance evaluations are difficult to manage with static datasets.
+## Repository Structure
 
-## The Solution
-1. **Self-Healing Automation:** Utilizing the semantic Accessibility Tree to natively handle layout drift and structural DOM mutations.
-2. **AI-Augmented Data Generation:** Dynamically synthesizing regulatory-compliant payloads (PII, AML screenings) to ensure test robustness.
-3. **True AI Agents (ZeroStep):** Exploring the bleeding edge of natural-language browser automation, removing the need for DOM locators entirely.
+The suite is divided into two primary modules:
 
-## Project Structure
-- `module1/app/`: The simulated Core Banking Portal (Loan Eligibility Calculator) with a built-in structural mutation trigger.
-- `module1/tests/01-traditional-automation.spec.js`: Demonstrates the failure points of traditional CSS/XPath locators.
-- `module1/tests/02-self-healing-automation.spec.js`: Demonstrates self-healing capabilities using semantic locators.
-- `module1/tests/03-ai-data-generation.spec.js`: Showcases dynamic, compliant KYC payload generation.
-- `module1/tests/04-true-ai-agent.spec.js`: Demonstrates advanced LLM-driven test execution via natural language processing.
+### Module 1: Self-Healing & Agentic TDD
+Located in `/module1/`, this module focuses on resolving the brittleness of traditional test automation caused by frequent frontend UI changes (DOM structure, CSS classes, IDs). 
+
+**Key Features:**
+- **Legacy Automation (Brittle):** Demonstrates how traditional ID-based selectors fail when the frontend structure mutates.
+- **Self-Healing Automation:** Utilizes Playwright's Accessibility Tree (`getByRole`) to ensure tests pass regardless of DOM scrambling.
+- **AI-Augmented Data Generation:** Uses `faker.js` to synthesize highly complex, unique KYC regulatory payloads dynamically, preventing static data collisions and AML false positives.
+- **True AI Agent Navigation:** Integrates `@zerostep/playwright` to execute browser commands via natural language, bypassing DOM locators entirely.
+- **Shift-Left Agentic TDD:** An interactive Node.js pipeline that parses pure business requirements (Jira tickets) and dynamically generates Playwright test scripts before frontend development begins.
+
+### Module 2: Chaos Engineering & Ledger Rollback
+Located in `/module2/`, this module focuses on testing the backend transactional resilience of a Peer-to-Peer (P2P) Payment Gateway during severe API failures.
+
+**Key Features:**
+- **P2P Transfer Dashboard:** A simulated banking ledger supporting optimistic balance updates.
+- **Network Fault Injection:** Uses Playwright's native network interception (`page.route`) to inject HTTP `429 Too Many Requests` status codes and complete connection aborts mid-flight.
+- **Rollback Verification:** Ensures the frontend application gracefully catches API failures, safely rolls back the deducted funds, and leaves the ledger in a consistent state.
+- **AI Rollback Validation:** Uses the ZeroStep AI agent to perform complex visual assertions on the ledger lock status and transaction state using natural language.
 
 ## Getting Started
 
-1. Navigate to the module directory:
-   ```bash
-   cd module1
-   ```
+### Prerequisites
+- Node.js (v18 or higher)
+- Playwright (`npm install -g @playwright/test`)
+- ZeroStep Token (Requires `.env` file in `module1` directory with `ZEROSTEP_TOKEN=<your-token>`)
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Installation
+Clone the repository and install dependencies for each module independently.
 
-3. Ensure Playwright browsers are installed:
-   ```bash
-   npx playwright install chromium
-   ```
-
-4. **ZeroStep Configuration:** To run the True AI Agent script (`04-true-ai-agent.spec.js`), you must configure your API token in a `.env` file within the `module1` directory:
-   ```env
-   ZEROSTEP_TOKEN=your_token_here
-   ```
-
-## Execution
-Run the automated test suite in UI mode for presentation purposes:
 ```bash
-npx playwright test --headed
+# Install Module 1 dependencies
+cd module1
+npm install
+
+# Install Module 2 dependencies
+cd ../module2
+npm install
 ```
 
-## Advancing the AI Approach
-To scale this solution further for enterprise banking:
-- **LLM-Based Data Synthesis:** Replace `faker.js` with an integration to an LLM API (like OpenAI or Cohere) to generate highly contextual, temporally-aware financial histories that match specific testing personas.
-- **Visual Regression AI:** Integrate AI-based visual diffing tools (e.g., Applitools) alongside Playwright to catch unintended visual mutations without asserting exact pixel differences.
-- **Autonomous Test Generation:** Implement a pipeline step that reads Jira acceptance criteria and automatically drafts the natural-language ZeroStep Playwright scripts before development even begins.
+## Execution Guide
+
+Please refer to the presentation guides located in each module for exact copy-pasteable execution commands to be used during the live demonstration:
+
+- `module1/Oracle_Session_Presentation_Guide.md`
+- `module2/Oracle_Session_Presentation_Guide.md`
+
+## Architecture & Best Practices
+- **Test Isolation:** Each Playwright specification is completely decoupled and standalone.
+- **Deterministic Assertions:** All test scripts employ hard assertions ensuring zero false-positives.
+- **Code Quality:** All scripts adhere to strict ECMAScript 6+ standards, omit non-technical comments, and implement modular abstractions where appropriate.

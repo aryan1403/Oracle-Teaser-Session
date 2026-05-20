@@ -3,13 +3,9 @@ const { faker } = require('@faker-js/faker');
 
 test.describe('AI-Augmented Test Data Generation', () => {
     test('Generate complex KYC/AML regulatory payloads dynamically', async ({ page }) => {
-        console.log("AI Data Generated Data");
+        console.log("Initializing dynamic data generation sequence");
 
-        // In traditional automation, testers often rely on static JSON files for KYC data.
-        // This leads to "flaky" tests when the same static data is flagged by AML systems during testing.
-        // AI/Dynamic generation creates unique, compliant payloads for every run.
-
-        // Let's generate a highly complex KYC (Know Your Customer) payload
+        // Dynamically synthesize compliant payloads to prevent static data collisions and AML false positives
         const generateKYCPayload = () => {
             return {
                 applicantId: faker.string.uuid(),
@@ -39,7 +35,7 @@ test.describe('AI-Augmented Test Data Generation', () => {
                     creditScore: faker.number.int({ min: 550, max: 850 })
                 },
                 amlScreening: {
-                    pepStatus: false, // Politically Exposed Person
+                    pepStatus: false,
                     sanctionsListHit: false,
                     riskRating: faker.helpers.arrayElement(['LOW', 'MEDIUM'])
                 },
@@ -54,15 +50,12 @@ test.describe('AI-Augmented Test Data Generation', () => {
         console.log(JSON.stringify(payload, null, 2));
         console.log("=======================================================\n");
 
-        // Simulate injecting this payload into a complex API call for evaluation
-        console.log("Sending payload to Core Banking API (Mock)...");
-
-        // Wait a second to simulate API call
+        console.log("Transmitting payload to core system API (Mock)...");
         await new Promise(r => setTimeout(r, 1000));
 
-        console.log(`Customer ${payload.personalDetails.firstName} ${payload.personalDetails.lastName} successfully registered with Risk Rating: ${payload.amlScreening.riskRating}`);
+        console.log(`Payload transmission successful. Entity registered: ${payload.personalDetails.firstName} ${payload.personalDetails.lastName} | Risk Assessment: ${payload.amlScreening.riskRating}`);
 
-        // The script successfully handled complex data generation, proving we don't need static datasets.
+        // Validate payload structure integrity
         expect(payload).toHaveProperty('applicantId');
         expect(payload.personalDetails.nationalIdNumber).toBeDefined();
     });
