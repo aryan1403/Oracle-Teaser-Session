@@ -1,0 +1,17 @@
+{
+  "name": "module2",
+  "version": "1.0.0",
+  "description": "Module 2: Chaos Engineering and Ledger Rollback",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "^1.44.0",
+    "@zerostep/playwright": "^0.1.3",
+    "dotenv": "^16.4.5"
+  }
+}
