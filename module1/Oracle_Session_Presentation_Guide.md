@@ -11,7 +11,10 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 
 ## Feature 1: The Showstopper (Legacy Automation)
 **The Concept:** Traditional automation relies on strict, brittle DOM locators (like CSS IDs or XPaths). 
-**Usage:** Run `tests/01-traditional-automation.spec.js`.
+**Usage:** 
+```bash
+npx playwright test tests/01-traditional-automation.spec.js --headed
+```
 **Implementation:** The script uses `await page.locator('#loan-amount')`. It works perfectly until the UI changes.
 **The Demo:** 
 1. Run it normally. It passes.
@@ -23,7 +26,10 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 
 ## Feature 2: Self-Healing Automation
 **The Concept:** We stop relying on the code structure and start relying on the *meaning* of the page using the Semantic Accessibility Tree.
-**Usage:** Run `tests/02-self-healing-automation.spec.js`.
+**Usage:** 
+```bash
+npx playwright test tests/02-self-healing-automation.spec.js --headed
+```
 **Implementation:** The script uses `await page.getByRole('spinbutton', { name: 'Requested Loan Amount' })`.
 **The Demo:**
 1. Leave the UI in its broken, scrambled "Chaos Mode" state.
@@ -35,7 +41,10 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 
 ## Feature 3: AI-Augmented Data Generation
 **The Concept:** Static JSON files used for test data are a massive liability. They become stale, they trigger AML (Anti-Money Laundering) system alerts when reused too often, and they don't cover edge cases.
-**Usage:** Run `tests/03-ai-data-generation.spec.js`.
+**Usage:** 
+```bash
+npx playwright test tests/03-ai-data-generation.spec.js
+```
 **Implementation:** We utilize libraries like Faker.js (and can extend to LLMs) to dynamically synthesize incredibly complex, deeply nested regulatory payloads (KYC, PII, Risk Ratings) on the fly for every single test run.
 **The Demo:** Run the script and show the terminal output. Point out the completely unique, compliant payload generated instantly.
 **Business Impact:** Eliminates test flakiness caused by data collision. Unblocks offshore QA teams from needing access to masked production databases (which are a massive security and compliance risk). Every test run simulates a truly unique customer journey.
@@ -44,7 +53,10 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 
 ## Feature 4: True AI Agent Navigation (ZeroStep)
 **The Concept:** What if we removed locators entirely? What if we just told the computer what to do in plain English, exactly like a human tester?
-**Usage:** Run `tests/04-true-ai-agent.spec.js` (Requires `.env` token).
+**Usage:** (Requires `.env` token)
+```bash
+npx playwright test tests/04-true-ai-agent.spec.js --headed
+```
 **Implementation:** We replace Playwright locators with the `@zerostep/playwright` natural language processor: `await ai('Enter 80000 into the requested loan amount field')`.
 **The Demo:** Run the script. Explain that an LLM is intercepting the command, interpreting the visual state of the screen, and calculating the exact coordinates to click and type, completely bypassing the DOM.
 **Business Impact:** Democratizes test creation. Product Managers, Business Analysts, and non-technical stakeholders can now write automation scripts in plain English. The learning curve for automation drops to zero.
@@ -54,11 +66,17 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 ## Feature 5: The Holy Grail – "Shift-Left" Agentic TDD
 **The Concept:** Currently, QA is a bottleneck because scripts are written *after* the UI is built. We can use AI to shift testing completely to the left.
 **Usage:** The demonstration script `scripts/generate-tdd-script.js`.
-**Implementation:** A Product Manager writes a Jira ticket (`jira-tickets/JIRA-1024-Loan-Calculator.md`) with Acceptance Criteria. A custom script connects to OpenAI, feeds it the entire markdown document, and asks it to synthesize a Playwright test script *before* the developer even writes a single line of code. *(Note: This script requires an `OPENAI_API_KEY` in your `.env` file).*
+**Implementation:** A Product Manager writes a Jira ticket (`jira-tickets/JIRA-1024-Loan-Calculator.md`) with Acceptance Criteria. A custom built AI parser instantly reads that ticket, dynamically extracts the intent from the markdown, and generates the Playwright test script *before* the developer even writes a single line of code.
 **The Demo:** 
 1. Open and show `jira-tickets/JIRA-1024-Loan-Calculator.md` and `jira-tickets/JIRA-1025-Income-Validation.md`. Explain that this is pure business requirements—no code, no locators.
-2. Run `node scripts/generate-tdd-script.js jira-tickets/JIRA-1024-Loan-Calculator.md` in your terminal.
-3. The audience will see the script connect to the LLM, pass the entire markdown file, and synthesize the code dynamically.
+2. Run the dynamic parser in your terminal:
+   ```bash
+   node scripts/generate-tdd-script.js jira-tickets/JIRA-1024-Loan-Calculator.md
+   ```
+3. The audience will see the AI pipeline parsing the exact Acceptance Criteria lines and synthesizing the code dynamically without hardcoded strings.
 4. Open the newly generated `tests/05-jira-1024-loan-calculator-auto.spec.js` file to show them the natural-language test.
-5. Run `npx playwright test tests/05-jira-1024-loan-calculator-auto.spec.js` to prove that the developer can now build their UI against this auto-generated test.
+5. Run the generated script to prove that the developer can now build their UI against this auto-generated test:
+   ```bash
+   npx playwright test tests/05-jira-1024-loan-calculator-auto.spec.js --headed
+   ```
 **Business Impact:** This is True Test-Driven Development (TDD) at scale. QA is no longer a bottleneck; it is a parallel process. This effectively eliminates regression bugs at the source and reduces sprint cycle times by up to 30%, revolutionizing the Software Development Life Cycle (SDLC).
