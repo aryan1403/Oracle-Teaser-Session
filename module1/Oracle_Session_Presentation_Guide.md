@@ -53,7 +53,13 @@ This document is your master script and conceptual guide for the Oracle Teaser S
 
 ## Feature 5: The Holy Grail – "Shift-Left" Agentic TDD
 **The Concept:** Currently, QA is a bottleneck because scripts are written *after* the UI is built. We can use AI to shift testing completely to the left.
-**Usage:** Show the code in `tests/05-shift-left-agentic-tdd.spec.js`.
-**Implementation:** A Product Manager writes a Jira ticket with Acceptance Criteria. An AI Agent instantly reads that ticket and generates the `ai()` natural language test script *before* the developer even writes a single line of code.
-**The Demo:** Show the script to the audience. Explain how the script knows what to test (because it uses plain English) even though the UI doesn't exist yet. The developer then builds the UI to satisfy this pre-existing test.
+**Usage:** The demonstration script `scripts/generate-tdd-script.js`.
+**Implementation:** A Product Manager writes a Jira ticket (`JIRA-1024-Loan-Calculator.md`) with Acceptance Criteria. An AI Agent instantly reads that ticket and generates the Playwright test script *before* the developer even writes a single line of code.
+**The Demo:** 
+1. Open and show `JIRA-1024-Loan-Calculator.md`. Explain that this is pure business requirements—no code, no locators.
+2. Ensure the `tests/05-shift-left-agentic-tdd.spec.js` file does not exist (delete it if it does).
+3. Run `node scripts/generate-tdd-script.js` in your terminal.
+4. The audience will see the AI pipeline parsing the Jira ticket and synthesizing the code.
+5. Open the newly generated `tests/05-shift-left-agentic-tdd.spec.js` file to show them the natural-language test.
+6. Run `npx playwright test tests/05-shift-left-agentic-tdd.spec.js` to prove that the developer can now build their UI against this auto-generated test.
 **Business Impact:** This is True Test-Driven Development (TDD) at scale. QA is no longer a bottleneck; it is a parallel process. This effectively eliminates regression bugs at the source and reduces sprint cycle times by up to 30%, revolutionizing the Software Development Life Cycle (SDLC).
