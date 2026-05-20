@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusBank Core | P2P Transfer Ledger</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="glass-container">
+        <header>
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                <span>NexusBank Core</span>
+            </div>
+            <h1>P2P Transfer Ledger</h1>
+            <p>Real-time transactional clearing and ledger reconciliation.</p>
+        </header>
+
+        <!-- Balance Ledger Grid -->
+        <section class="ledger-grid">
+            <div class="balance-card" id="sender-card">
+                <h3>Sender (You)</h3>
+                <div class="balance-value" id="sender-balance">$1000.00</div>
+                <div class="account-details">ACC: **** 9821</div>
+            </div>
+            <div class="balance-card" id="recipient-card">
+                <h3>Recipient</h3>
+                <div class="balance-value" id="recipient-balance">$500.00</div>
+                <div class="account-details">ACC: **** 4302</div>
+            </div>
+        </section>
+
+        <!-- Transfer Form -->
+        <section class="transfer-form-section">
+            <form id="transfer-form" onsubmit="event.preventDefault(); initiateTransfer();">
+                <div class="input-group">
+                    <label for="transfer-amount">Amount to Transfer ($)</label>
+                    <input type="number" id="transfer-amount" required placeholder="0.00" min="1" max="1000" step="any" aria-label="Amount to Transfer">
+                </div>
+                <button type="submit" id="transfer-submit-btn" class="primary-btn" aria-label="Confirm Transfer">Confirm Transfer</button>
+            </form>
+        </section>
+
+        <!-- Ledger Status -->
+        <section class="transaction-history">
+            <h3>Ledger Reconciliation Status</h3>
+            <div class="history-card">
+                <div class="status-indicator-row">
+                    <span>Transaction State:</span>
+                    <span id="transaction-state" class="state-idle">Idle</span>
+                </div>
+                <div class="status-indicator-row">
+                    <span>Ledger Lock Balance:</span>
+                    <strong id="ledger-lock-status">Unlocked</strong>
+                </div>
+                <div class="alert-box hidden" id="error-alert">
+                    <span id="error-message">Error details</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
