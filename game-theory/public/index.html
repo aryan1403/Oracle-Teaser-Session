@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptoeconomic Simulation Lab | Game-Theoretic Verification</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top System Alert Bar -->
+    <div id="circuitBreakerAlert" class="system-alert-bar hidden">
+        <div class="alert-content">
+            <span class="alert-icon">⚠️</span>
+            <span class="alert-text"><strong>CRITICAL SECURITY BREACH:</strong> Circuit Breaker Activated. Decentralized Oracle Lifecycle Halted due to Abnormal price variance/economic vulnerability.</span>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header class="app-header">
+            <div class="header-main">
+                <div class="logo-area">
+                    <div class="pulse-dot active"></div>
+                    <h1>CRYPTOECONOMIC SIMULATION LAB</h1>
+                </div>
+                <div class="system-status">
+                    <span class="badge">LEDGER STATUS: ACTIVE (LOCAL IN-MEMORY)</span>
+                    <span id="contractAddr" class="badge contract-badge">CONTRACT: Deployed at 0x...</span>
+                </div>
+            </div>
+            <p class="subtitle">Applied Game Theory Verification Framework for Decentralized Smart Contracts</p>
+        </header>
+
+        <!-- Global Metrology Board -->
+        <section class="metrology-section">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>CURRENT EPOCH</h3>
+                    <p id="currentEpochVal" class="metric-value">0</p>
+                    <span class="metric-desc">Oracle Aggregation Cycles Completed</span>
+                </div>
+                <div class="metric-card">
+                    <h3>LAST PRICE CONSENSUS</h3>
+                    <p id="lastPriceVal" class="metric-value">$100.00</p>
+                    <span class="metric-desc">Schelling Point (Median Price)</span>
+                </div>
+                <div class="metric-card">
+                    <h3>TOTAL LOCKED COLLATERAL</h3>
+                    <p id="totalLockedVal" class="metric-value">0.00 ETH</p>
+                    <span class="metric-desc">Total Smart Contract Vault Balance</span>
+                </div>
+                <div class="metric-card">
+                    <h3>ACTIVE VALIDATORS</h3>
+                    <p id="activeValidatorsVal" class="metric-value">0 / 5</p>
+                    <span class="metric-desc">Node Consensus Capacity</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scenarios Grid -->
+        <div class="scenarios-layout">
+            
+            <!-- LEFT PANEL: NODE STATUS & SCENARIO 1 (STAKING) -->
+            <div class="layout-column">
+                
+                <!-- SCENARIO 1: Staking Lockup & Wallet Balances -->
+                <div class="glass-panel" id="panel-scenario1">
+                    <div class="panel-header">
+                        <span class="scenario-badge">Scenario 1</span>
+                        <h2>Skin in the Game — Staking & Registration</h2>
+                    </div>
+                    <p class="panel-desc">Validating that financial collateral requirements raise the Cost of Entry, preventing Sybil attacks and securing validator identity registration.</p>
+                    
+                    <div class="nodes-grid-container">
+                        <table class="nodes-table">
+                            <thead>
+                                <tr>
+                                    <th>Node</th>
+                                    <th>Wallet Balance</th>
+                                    <th>Locked Stake</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="nodesTableBody">
+                                <!-- Dynamically filled by script -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SCENARIO 2: Slashing Logic & Data Submission -->
+                <div class="glass-panel" id="panel-scenario2">
+                    <div class="panel-header">
+                        <span class="scenario-badge">Scenario 2</span>
+                        <h2>Programmatic Slashing Conditions</h2>
+                    </div>
+                    <p class="panel-desc">Simulating the programmatic dispute resolution loop. Auditing subagents evaluate data payloads; fraudulent inputs trigger instant 100% forfeiture of locked collateral.</p>
+                    
+                    <div class="submission-terminal">
+                        <h3>Ledger Data Submissions</h3>
+                        <div class="terminal-logs" id="dataLogs">
+                            <div class="terminal-line placeholder">No data submissions recorded on ledger yet.</div>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <div class="input-group">
+                            <label for="selectNodeSubmit">Submit Payload As:</label>
+                            <select id="selectNodeSubmit">
+                                <option value="1">Node 1</option>
+                                <option value="2">Node 2</option>
+                                <option value="3">Node 3</option>
+                                <option value="4">Node 4</option>
+                                <option value="5">Node 5</option>
+                            </select>
+                        </div>
+                        <div class="button-row">
+                            <button id="btnSubmitHonest" class="btn btn-secondary">Submit Honest Data</button>
+                            <button id="btnSubmitMalicious" class="btn btn-danger">Submit Corrupted Data</button>
+                        </div>
+                    </div>
+
+                    <div class="dispute-panel">
+                        <h3>Dispute Resolution Console</h3>
+                        <div class="dispute-info">
+                            <div><strong>Auditor Address:</strong> <span id="auditorAddressVal">0x...</span></div>
+                            <div><strong>Auditor Balance:</strong> <span id="auditorBalanceVal">100.00 ETH</span></div>
+                        </div>
+                        <button id="btnDisputeSlash" class="btn btn-warning btn-full" disabled>Trigger Auditor Challenge & Slash</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: SCENARIO 3 (SCHELLING ORACLE STRESS-TEST) -->
+            <div class="layout-column">
+                <div class="glass-panel" id="panel-scenario3">
+                    <div class="panel-header">
+                        <span class="scenario-badge">Scenario 3</span>
+                        <h2>Systemic Stress-Testing & Collusion Resistance</h2>
+                    </div>
+                    <p class="panel-desc">Analyzing the Schelling Point pricing consensus game. Stress-test the system against 51% cartelization attacks and verify the execution of mathematical security monitors.</p>
+                    
+                    <!-- Economic Security Monitor Card -->
+                    <div class="economic-monitor">
+                        <h3>Economic Security Monitor</h3>
+                        <div class="ratio-gauge-container">
+                            <div class="metric-row">
+                                <div class="sub-metric">
+                                    <span class="sub-label">Cost of Corruption (CoC)</span>
+                                    <span id="cocVal" class="sub-val">0 ETH</span>
+                                    <span class="sub-desc">Required to bribe/buy 51% of nodes</span>
+                                </div>
+                                <div class="sub-metric">
+                                    <span class="sub-label">Profit from Corruption (PfC)</span>
+                                    <div class="pfc-input-wrapper">
+                                        <input type="number" id="pfcVal" value="35" min="1" max="1000">
+                                        <span class="unit">ETH</span>
+                                    </div>
+                                    <span class="sub-desc">Expected gain from oracle exploit</span>
+                                </div>
+                            </div>
+                            
+                            <div class="security-status-indicator">
+                                <span class="indicator-label">SECURITY RATIO (CoC / PfC):</span>
+                                <span id="secRatioVal" class="sec-ratio-text">0%</span>
+                                <div id="secRatioIndicator" class="security-dot green"></div>
+                                <span id="secStatusText" class="security-status-text">SECURE</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="consensus-epoch-details">
+                        <h3>Oracle Price Report Cards (Current Epoch)</h3>
+                        <div id="priceReportsContainer" class="price-cards-grid">
+                            <!-- Populated dynamically -->
+                            <div class="price-card-placeholder">No prices reported in the current epoch. Stake nodes to start reporting.</div>
+                        </div>
+                    </div>
+
+                    <div class="scenario3-controls">
+                        <h3>Simulation Orchestrator Controls</h3>
+                        <div class="simulation-actions">
+                            <button id="btnRunHonestEpoch" class="btn btn-success">Simulate Honest Consensus Round</button>
+                            <button id="btnTriggerCollusion" class="btn btn-danger">Simulate 51% Cartel Collusion Attack</button>
+                            <button id="btnAggregate" class="btn btn-primary">Aggregate consensus (Solidity call)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel panel-danger-zone">
+                    <h2>Simulation Control Panel</h2>
+                    <div class="control-row">
+                        <button id="btnResetSimulation" class="btn btn-danger">Reset & Redeploy Private Ledger</button>
+                        <div class="status-feed">
+                            <span class="feed-label">Simulation Log:</span>
+                            <div id="simulationEventLog" class="feed-content">
+                                <div class="feed-line">[System] Private virtual ledger initialized.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

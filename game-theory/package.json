@@ -1,0 +1,20 @@
+{
+  "name": "game-theory-simulation-lab",
+  "version": "1.0.0",
+  "description": "Cryptoeconomic simulation lab verifying game-theoretic smart contracts",
+  "main": "server.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "start": "node server.js",
+    "verify": "node verify.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ethers": "^6.13.1"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.5",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "playwright": "^1.44.1"
+  }
+}

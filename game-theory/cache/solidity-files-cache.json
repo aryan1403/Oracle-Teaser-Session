@@ -1,0 +1,79 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/aaryankumar/Documents/Oracle-Teaser-Session/game-theory/contracts/DataSubmissionLedger.sol": {
+      "lastModificationDate": 1780546100924,
+      "contentHash": "b035bacaa7ffbafb17bb8324eab5ebc6",
+      "sourceName": "contracts/DataSubmissionLedger.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "DataSubmissionLedger"
+      ]
+    },
+    "/Users/aaryankumar/Documents/Oracle-Teaser-Session/game-theory/contracts/SchellingOracle.sol": {
+      "lastModificationDate": 1780546111815,
+      "contentHash": "b8f31c35d96e163cb43e9b7422711a84",
+      "sourceName": "contracts/SchellingOracle.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./DataSubmissionLedger.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "SchellingOracle"
+      ]
+    }
+  }
+}
