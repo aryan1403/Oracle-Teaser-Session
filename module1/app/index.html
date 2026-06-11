@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="background-blobs">
         <div class="blob blob-1"></div>
@@ -23,7 +25,10 @@
     <main class="glass-container">
         <header>
             <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
                 <span>NexusBank Core</span>
             </div>
             <h1>Loan Eligibility Calculator</h1>
@@ -34,8 +39,15 @@
             <form id="loan-form" onsubmit="event.preventDefault(); calculateLoan();">
                 <div class="input-group" id="group-amount">
                     <label for="loan-amount">Requested Loan Amount ($)</label>
-                    <input type="number" id="loan-amount" required placeholder="e.g. 50000" aria-label="Requested Loan Amount">
+                    <input type="number" id="loan-amount" required placeholder="e.g. 50000"
+                        aria-label="Requested Loan Amount">
                 </div>
+
+                <!-- <div class="input-group" id="group-amount-inr">
+                    <label for="loan-amount">Requested Loan Amount (₹)</label>
+                    <input type="number" id="loan-amount-inr" required placeholder="e.g. 50000"
+                        aria-label="Requested Loan Amount">
+                </div> -->
 
                 <div class="input-group" id="group-tenure">
                     <label for="loan-tenure">Tenure (Years)</label>
@@ -44,11 +56,13 @@
 
                 <div class="input-group" id="group-income">
                     <label for="monthly-income">Monthly Income ($)</label>
-                    <input type="number" id="monthly-income" required placeholder="e.g. 8000" aria-label="Monthly Income">
+                    <input type="number" id="monthly-income" required placeholder="e.g. 8000"
+                        aria-label="Monthly Income">
                 </div>
 
                 <div class="action-group" id="group-action">
-                    <button type="submit" id="calculate-btn" class="primary-btn" aria-label="Calculate Eligibility">Calculate Eligibility</button>
+                    <button type="submit" id="calculate-btn" class="primary-btn"
+                        aria-label="Calculate Eligibility">Calculate Eligibility</button>
                 </div>
             </form>
         </section>
@@ -65,11 +79,13 @@
                     <span>Estimated EMI:</span>
                     <strong id="est-emi">$0</strong>
                 </div>
-                <button id="reset-btn" class="secondary-btn" onclick="resetForm()" aria-label="Calculate Another Loan">Calculate Another Loan</button>
+                <button id="reset-btn" class="secondary-btn" onclick="resetForm()"
+                    aria-label="Calculate Another Loan">Calculate Another Loan</button>
             </div>
         </section>
     </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,7 +1,7 @@
 import { fork } from 'child_process';
 
 const PORT = 3000;
-const BASE_URL = `http://localhost:${PORT}`;
+const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 // Helper: Wait MS
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -240,35 +240,65 @@ async function runTests() {
   return false;
 }
 
-// Fork server and run tests
-console.log('[Server Startup] Spawning simulator background process on port 3000...');
-const server = fork('./server.js', { silent: true });
+// Smart Server Discovery & Spawning
+let server = null;
+let shouldKillServer = false;
 
-// Capture server output logs and print them prefixed
-server.stdout.on('data', (data) => {
-  console.log(`[Server Console] ${data.toString().trim()}`);
-});
+try {
+  const checkRes = await fetch(`${BASE_URL}/api/state`);
+  if (checkRes.ok) {
+    console.log('[Server Discovery] Existing simulator instance detected on port 3000. Running tests against active instance...');
+  } else {
+    throw new Error('Not OK');
+  }
+} catch (e) {
+  console.log('[Server Startup] Spawning simulator background process on port 3000...');
+  server = fork('./server.js', { silent: true });
+  shouldKillServer = true;
 
-server.stderr.on('data', (data) => {
-  console.error(`[Server Error] ${data.toString().trim()}`);
-});
+  // Capture server output logs and print them prefixed
+  server.stdout.on('data', (data) => {
+    console.log(`[Server Console] ${data.toString().trim()}`);
+  });
 
-// Give the server a moment to start
-await wait(1500);
+  server.stderr.on('data', (data) => {
+    console.error(`[Server Error] ${data.toString().trim()}`);
+  });
+
+  // Wait/Poll for server to start up
+  let connected = false;
+  for (let i = 0; i < 10; i++) {
+    await wait(500);
+    try {
+      const res = await fetch(`${BASE_URL}/api/state`);
+      if (res.ok) {
+        connected = true;
+        break;
+      }
+    } catch (err) {
+      // Keep waiting
+    }
+  }
+  if (!connected) {
+    console.error('\nCRITICAL: Failed to connect to the spawned simulator server on port 3000.');
+    if (server) server.kill();
+    process.exit(1);
+  }
+}
 
 try {
   const allPassed = await runTests();
   if (allPassed) {
     console.log('\nALL SYSTEM STATE VERIFICATIONS: COMPLETED WITH SUCCESS (100% PASS RATE).');
-    server.kill();
+    if (shouldKillServer && server) server.kill();
     process.exit(0);
   } else {
     console.error('\nSTATE VERIFICATION FAILED: Test assertions did not match specifications.');
-    server.kill();
+    if (shouldKillServer && server) server.kill();
     process.exit(1);
   }
 } catch (err) {
   console.error('\nCRITICAL TEST ERROR:', err.message);
-  server.kill();
+  if (shouldKillServer && server) server.kill();
   process.exit(1);
 }

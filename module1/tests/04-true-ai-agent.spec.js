@@ -19,10 +19,10 @@ test.describe('True AI Agent Automation (ZeroStep)', () => {
         console.log("Executing ZeroStep AI actions via natural language instructions...");
 
         // Execute sequential state modifications via AI agent
-        await ai('Enter 80000 into the requested loan amount field', { page, test });
+        await ai('Enter 80000 into the requested loan amount field with dollar $', { page, test });
         await ai('Enter 20 into the tenure field', { page, test });
         await ai('Enter 12000 into the monthly income field', { page, test });
-        
+
         await ai('Click the calculate eligibility button', { page, test });
 
         // Assert dynamic state changes via AI assessment
