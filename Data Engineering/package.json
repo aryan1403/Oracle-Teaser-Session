@@ -1,0 +1,14 @@
+{
+  "name": "oci-data-engineering-simulation",
+  "version": "1.0.0",
+  "description": "Simulation library for OCI Streaming Service, Autonomous Database, Transactional Outbox, CDC and DLQ patterns.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_runner.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

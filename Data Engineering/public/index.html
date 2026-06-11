@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCI Data Engineering & Transactional Outbox Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Glow FX -->
+  <div class="glow-bg"></div>
+
+  <!-- Header Dashboard -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-box">
+        <span class="logo-icon">▲</span>
+        <h1>OCI DATA ENGINEERING</h1>
+      </div>
+      <p class="subtitle">Enterprise Transactional Simulation Console & Telemetry Monitor</p>
+    </div>
+    
+    <div class="header-right">
+      <div class="control-badge">
+        <span class="label">OCI Region</span>
+        <span class="value val-cyan">us-ashburn-1</span>
+      </div>
+      
+      <button id="btn-toggle-stream" class="btn btn-status-online" onclick="toggleStreamConnection()">
+        <span class="status-indicator online" id="stream-status-dot"></span>
+        Stream Broker: <span id="stream-status-text">ONLINE</span>
+      </button>
+      
+      <button id="btn-reset" class="btn btn-danger" onclick="resetSystem()">
+        Reset System
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    
+    <!-- Exercise 1 Panel -->
+    <section class="glass-card col-span-12" id="sec-ordering">
+      <div class="card-header">
+        <span class="badge badge-orange">Exercise 1</span>
+        <h2>Non-Blocking Event Ingestion & Message Partitioning</h2>
+      </div>
+      <p class="card-description">
+        Sends high-volume, concurrent debit/credit requests. Payloads are assigned to virtual OCI stream partitions using a deterministic hash key (`hashCode(accountId) % 4`). Notice how message sequence is strictly preserved per account entity without thread blocking.
+      </p>
+
+      <div class="split-layout">
+        <div class="form-container">
+          <div class="form-row">
+            <div class="input-group">
+              <label for="ex1-account">Account Target</label>
+              <select id="ex1-account">
+                <option value="ACC-1001">ACC-1001 (Alpha Corp)</option>
+                <option value="ACC-1002">ACC-1002 (Beta Industries)</option>
+                <option value="ACC-1003">ACC-1003 (Charlie LLC)</option>
+                <option value="ACC-1004">ACC-1004 (New Startup)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="ex1-amount">Amount ($)</label>
+              <input type="number" id="ex1-amount" value="150.00" min="1">
+            </div>
+            <div class="input-group">
+              <label for="ex1-type">Type</label>
+              <select id="ex1-type">
+                <option value="DEBIT">DEBIT</option>
+                <option value="CREDIT">CREDIT</option>
+              </select>
+            </div>
+          </div>
+          <button id="btn-send-ex1" class="btn btn-primary" onclick="runExercise1()">
+            Fire Parallel Transaction Stream (5x Events)
+          </button>
+        </div>
+
+        <div class="telemetry-logs">
+          <div class="log-title">Gateway Ingestion Telemetry</div>
+          <div class="log-screen" id="ex1-telemetry">
+            [System Log] Ready for ingestion streams...
+          </div>
+        </div>
+      </div>
+
+      <div class="partitions-visualizer">
+        <div class="partition-lane" id="p-0">
+          <div class="lane-header">Partition 0 <span class="p-key-indicator">(Keys: ACC-1004)</span></div>
+          <div class="lane-messages" id="p-0-messages"></div>
+        </div>
+        <div class="partition-lane" id="p-1">
+          <div class="lane-header">Partition 1 <span class="p-key-indicator">(Keys: ACC-1001)</span></div>
+          <div class="lane-messages" id="p-1-messages"></div>
+        </div>
+        <div class="partition-lane" id="p-2">
+          <div class="lane-header">Partition 2 <span class="p-key-indicator">(Keys: ACC-1003)</span></div>
+          <div class="lane-messages" id="p-2-messages"></div>
+        </div>
+        <div class="partition-lane" id="p-3">
+          <div class="lane-header">Partition 3 <span class="p-key-indicator">(Keys: ACC-1002)</span></div>
+          <div class="lane-messages" id="p-3-messages"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 2 Panel -->
+    <section class="glass-card col-span-8" id="sec-outbox">
+      <div class="card-header">
+        <span class="badge badge-orange">Exercise 2</span>
+        <h2>Transactional Outbox Pattern vs. Dual-Write CDC Flow</h2>
+      </div>
+      <p class="card-description">
+        Demonstrates transaction atomicity. In <b>Dual-Write</b> mode, a transaction tries to commit and publish simultaneously. If the streaming broker is offline, the DB transaction rolls back completely to avoid data drift. In <b>Outbox Pattern</b>, DB updates and outbox log insertion commit atomically, and the <b>GoldenGate CDC Agent</b> async relays the updates.
+      </p>
+
+      <div class="mode-selector-tabs">
+        <label class="tab-label">
+          <input type="radio" name="tx-mode" value="dual_write" checked>
+          <div class="tab-card">
+            <div class="tab-title">Dual-Write (Sync Publish)</div>
+            <div class="tab-desc">Updates ledger & publishes to stream in one block. Stream downtime aborts DB changes.</div>
+          </div>
+        </label>
+        <label class="tab-label">
+          <input type="radio" name="tx-mode" value="outbox">
+          <div class="tab-card">
+            <div class="tab-title">Transactional Outbox (CDC Async)</div>
+            <div class="tab-desc">Ledger & Outbox table updated atomically. CDC engine guarantees final event delivery.</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <div class="input-group">
+          <label for="ex2-account">Target Account</label>
+          <select id="ex2-account">
+            <option value="ACC-1001">ACC-1001 (Alpha Corp)</option>
+            <option value="ACC-1002">ACC-1002 (Beta Industries)</option>
+            <option value="ACC-1003">ACC-1003 (Charlie LLC)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="ex2-amount">Transaction Amount ($)</label>
+          <input type="number" id="ex2-amount" value="500.00" min="1">
+        </div>
+        <div class="input-group">
+          <label for="ex2-type">Type</label>
+          <select id="ex2-type">
+            <option value="DEBIT">DEBIT</option>
+            <option value="CREDIT">CREDIT</option>
+          </select>
+        </div>
+        <div class="input-group align-end">
+          <button id="btn-submit-ex2" class="btn btn-primary w-100" onclick="runExercise2()">
+            Commit Transaction
+          </button>
+        </div>
+      </div>
+
+      <!-- Ledger and Outbox Visual Tables -->
+      <div class="db-tables-container">
+        <div class="db-table-box">
+          <h3>Oracle Autonomous DB Ledger</h3>
+          <table class="data-table" id="table-ledger">
+            <thead>
+              <tr>
+                <th>Account ID</th>
+                <th>Owner Entity</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic content -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="db-table-box">
+          <h3>Oracle DB Outbox Log Table</h3>
+          <table class="data-table" id="table-outbox">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic content -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CDC Agent Telemetry Column -->
+    <section class="glass-card col-span-4" id="sec-cdc-agent">
+      <div class="card-header">
+        <span class="badge badge-blue">GoldenGate CDC Agent</span>
+      </div>
+      
+      <div class="cdc-anim-container">
+        <div class="cdc-node db-side">Oracle DB</div>
+        <div class="cdc-pipe-line">
+          <div class="flow-dot" id="cdc-flow-dot"></div>
+        </div>
+        <div class="cdc-node stream-side">OCI Stream</div>
+      </div>
+
+      <div class="telemetry-logs mt-3">
+        <div class="log-title">CDC Daemon Feed</div>
+        <div class="log-screen small-screen" id="cdc-telemetry">
+          [CDC Agent] Initializing outbox tail log reader...
+        </div>
+      </div>
+
+      <div class="cdc-statistics mt-3">
+        <div class="metric-row">
+          <span>Relay Status:</span>
+          <span class="val-green font-bold" id="cdc-agent-status">ACTIVE</span>
+        </div>
+        <div class="metric-row">
+          <span>Relayed Messages:</span>
+          <span class="val-cyan font-bold" id="cdc-relayed-count">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 3 Panel -->
+    <section class="glass-card col-span-12" id="sec-chaos">
+      <div class="card-header">
+        <span class="badge badge-danger">Exercise 3</span>
+        <h2>Advanced Pipeline Resilience & Dead Letter Queue (DLQ) Isolation</h2>
+      </div>
+      <p class="card-description">
+        Demonstrates fault isolation. A continuous fraud screening consumer runs asynchronously. Press <b>Inject Chaos Poison Pill</b> to publish a malformed/corrupted transaction payload. Watch the consumer immediately isolate the poison pill payload into the DLQ topic and continue reading safe transactions without crashing or locking the stream.
+      </p>
+
+      <div class="chaos-grid">
+        <div class="chaos-controls">
+          <div class="btn-group-vertical">
+            <button id="btn-chaos-1" class="btn btn-warning" onclick="injectPoisonPill('malformed_json')">
+              Inject Malformed JSON (Parsing Failure)
+            </button>
+            <button id="btn-chaos-2" class="btn btn-warning" onclick="injectPoisonPill('missing_routing')">
+              Inject Missing Routing Code (Schema Violation)
+            </button>
+            <button id="btn-chaos-3" class="btn btn-warning" onclick="injectPoisonPill('negative_amount')">
+              Inject Negative Amount (Business Rule Exception)
+            </button>
+            <button id="btn-chaos-4" class="btn btn-danger" onclick="injectPoisonPill('blacklisted_account')">
+              Inject Blacklisted Entity (Security Trap)
+            </button>
+          </div>
+          
+          <div class="pipeline-status-card mt-3">
+            <div class="log-title">Real-Time Data Pipeline Throughput</div>
+            <div class="throughput-visualizer" id="throughput-visualizer">
+              <!-- Animated canvas or bars for performance telemetry -->
+              <div class="t-bars" id="throughput-chart-bars"></div>
+            </div>
+            <div class="throughput-caption" id="throughput-current">Current Throughput: 0 tx/sec</div>
+          </div>
+        </div>
+
+        <div class="chaos-telemetry-box">
+          <div class="metrics-row-top">
+            <div class="stat-card">
+              <div class="stat-val val-green" id="metric-ingested">0</div>
+              <div class="stat-label">Total Streams Ingested</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val val-cyan" id="metric-valid">0</div>
+              <div class="stat-label">Clean Transactions Screened</div>
+            </div>
+            <div class="stat-card border-danger">
+              <div class="stat-val val-red" id="metric-dlq">0</div>
+              <div class="stat-label">DLQ Isolated Poison Pills</div>
+            </div>
+          </div>
+
+          <div class="dlq-table-wrapper">
+            <h3>Dead Letter Queue (DLQ) Isolated Records</h3>
+            <table class="data-table" id="table-dlq">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Reason</th>
+                  <th>Consumer Node</th>
+                  <th>Raw Corrupted Payload</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="4" class="text-center val-muted">No isolated poison pills detected. Pipeline healthy.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>OCI Simulation Sandbox - Under Sandbox Isolation Protocol. local.port:3000</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
