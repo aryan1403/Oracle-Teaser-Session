@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCI Streaming & Ledger Pipeline Monitor</title>
+  <!-- Google Fonts Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="glass-bg-glow"></div>
+  
+  <div class="app-container">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="oci-icon"></div>
+        <div>
+          <h1>OCI Event Ingestion Monitor</h1>
+          <p class="subtitle">High-Throughput Streaming & Resilient Ledger Simulation Pipeline</p>
+        </div>
+      </div>
+      <div class="simulation-status-badge">
+        <span class="pulse-indicator status-idle" id="stream-pulse"></span>
+        <span id="stream-status-text">Ingestion Pipeline Idle</span>
+      </div>
+    </header>
+
+    <!-- Controls Panel -->
+    <section class="panel control-panel">
+      <div class="panel-header">
+        <h2>Simulation & Chaos Orchestration Control</h2>
+      </div>
+      <div class="control-grid">
+        <button id="btn-start" class="btn btn-primary">Start Ingestion Stream</button>
+        <button id="btn-stop" class="btn btn-secondary">Pause Stream</button>
+        <button id="btn-inject-dup" class="btn btn-accent-cyan">Inject Duplicate Tokens</button>
+        <button id="btn-kill-c" class="btn btn-danger">Kill Consumer-C</button>
+        <button id="btn-start-c" class="btn btn-success">Restart Consumer-C</button>
+        <button id="btn-inject-poison" class="btn btn-accent-pink">Inject Poison Pill</button>
+        <button id="btn-reset" class="btn btn-reset">Reset Pipeline State</button>
+      </div>
+    </section>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+      
+      <!-- Left Column: OCI Stream & Partitioning -->
+      <div class="grid-column">
+        <div class="panel topic-panel">
+          <div class="panel-header">
+            <h2>OCI Streaming Service (Local Stream broker)</h2>
+            <div class="badge cyan-badge">4 Partitions</div>
+          </div>
+          <p class="panel-description">Account ID key hashing distributes events uniformly while maintaining chronological order within partitions.</p>
+          
+          <div class="partitions-container" id="partitions-wrapper">
+            <!-- Partitions will be injected here by JS -->
+          </div>
+        </div>
+
+        <div class="panel ledger-panel">
+          <div class="panel-header">
+            <h2>Database Ledger Topologies</h2>
+            <div class="badge green-badge">Consistent Replica Ledger</div>
+          </div>
+          <p class="panel-description">Mutated account balances reflecting transaction verification logs.</p>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Account ID</th>
+                  <th>Total Balance</th>
+                  <th>Currency</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="ledger-body">
+                <!-- Ledger entries injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Consumer Group & DLQ -->
+      <div class="grid-column">
+        <div class="panel consumer-group-panel">
+          <div class="panel-header">
+            <h2>Active Consumer Group (3 Node Containers)</h2>
+            <div class="badge purple-badge" id="rebalance-counter">3 Active</div>
+          </div>
+          <p class="panel-description">Dynamic partition rebalancing is managed on node shutdowns. Idempotency cache handles deduplication.</p>
+          
+          <div class="consumers-container" id="consumers-wrapper">
+            <!-- Consumers injected by JS -->
+          </div>
+        </div>
+
+        <div class="panel dlq-panel">
+          <div class="panel-header">
+            <h2>Dead Letter Queue (DLQ Isolation Stream)</h2>
+            <div class="badge red-badge" id="dlq-badge">0 Messages</div>
+          </div>
+          <p class="panel-description">Isolates corrupted transaction structures instantly to prevent queue blockages.</p>
+          
+          <div class="dlq-list" id="dlq-wrapper">
+            <div class="empty-dlq-msg">No poison pills isolated. Pipeline operates in safe boundaries.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom: Console Log Telemetry -->
+    <section class="panel console-panel">
+      <div class="panel-header">
+        <h2>Real-Time Pipeline Telemetry Console Logs</h2>
+        <button id="btn-clear-console" class="btn-text">Clear Console</button>
+      </div>
+      <div class="console-output" id="console-logs">
+        <!-- Logs stream here -->
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

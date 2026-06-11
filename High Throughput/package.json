@@ -1,0 +1,14 @@
+{
+  "name": "oci-high-throughput-simulator",
+  "version": "1.0.0",
+  "description": "Simulation library for high-throughput messaging and resilient ingestion pipelines on OCI",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_runner.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
